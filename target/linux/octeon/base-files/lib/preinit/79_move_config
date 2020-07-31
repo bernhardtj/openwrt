@@ -5,7 +5,8 @@ move_config() {
 	. /lib/upgrade/common.sh
 
 	case "$(board_name)" in
-		erlite)
+		erlite | \
+		ubnt,unifi-security-gateway-3p)
 			mount -t vfat /dev/sda1 /mnt
 			[ -f "/mnt/$BACKUP_FILE" ] && mv -f "/mnt/$BACKUP_FILE" /
 			umount /mnt
