@@ -9,7 +9,7 @@ script:
 - echo 'CONFIG_TARGET_octeon_DEVICE_ubnt_unifi-security-gateway-3p=y' >> .config
 - echo 'CONFIG_PACKAGE_luci=m' >> .config
 - make defconfig
-- travis_wait 30 make || make -j1 V=s
+- make V=s || make -j1 V=s
 - sed -i /bin/d .gitignore 
 deploy:
   provider: pages:git
