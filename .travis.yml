@@ -10,7 +10,9 @@ script:
 - echo 'CONFIG_TARGET_octeon_DEVICE_ubnt_unifi-security-gateway-3p=y' >> .config
 - echo 'CONFIG_PACKAGE_luci=m' >> .config
 - make defconfig
-- travis-wait-improved --timeout 60m make || make -j1 V=s
+- while sleep 9m; do echo "=====[ $SECONDS seconds still running ]====="; done &
+- make || make -j1 V=s
+- kill %1
 - sed -i /bin/d .gitignore 
 deploy:
   provider: pages:git
