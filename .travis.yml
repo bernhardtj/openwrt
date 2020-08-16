@@ -2,6 +2,7 @@ dist: bionic
 install:
 - sudo apt-get update
 - sudo apt-get install subversion g++ zlib1g-dev build-essential git python python3 python3-distutils libncurses5-dev gawk gettext unzip file libssl-dev wget libelf-dev ecj fastjar java-propose-classpath
+- pip install git+https://github.com/naftulikay/travis-pls
 script:
 - scripts/feeds update -a
 - scripts/feeds install -a
@@ -9,7 +10,7 @@ script:
 - echo 'CONFIG_TARGET_octeon_DEVICE_ubnt_unifi-security-gateway-3p=y' >> .config
 - echo 'CONFIG_PACKAGE_luci=m' >> .config
 - make defconfig
-- make 2>&1 || make -j1 V=s
+- travis-pls make || make -j1 V=s
 - sed -i /bin/d .gitignore 
 deploy:
   provider: pages:git
