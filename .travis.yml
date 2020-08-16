@@ -1,0 +1,20 @@
+dist: bionic
+install:
+- sudo apt-get update
+- sudo apt-get install subversion g++ zlib1g-dev build-essential git python python3 python3-distutils libncurses5-dev gawk gettext unzip file libssl-dev wget libelf-dev ecj fastjar java-propose-classpath
+script:
+- bash -c './scripts/feeds update -a'
+- bash -c './scripts/feeds install -a'
+- echo 'CONFIG_TARGET_octeon=y' > .config
+- echo 'CONFIG_TARGET_octeon_DEVICE_ubnt_unifi-security-gateway-3p=y' >> .config
+- echo 'CONFIG_PACKAGE_luci=m' >> .config
+- make defconfig
+- make || make -j1 V=s
+- sed -i /bin/d .gitignore 
+deploy:
+  provider: pages:git
+  edge: true
+  cleanup: false
+  keep_history: false
+  token:
+    secure: edoGawUutAfuZem4gyJjz/KfMB9Zzii9XHOHTRndH3cscQGIuAiU86N3i8HPfexglI31icqEtzxFPhBWo9ehGr3rZg+4B4pQscyaclhaJGfcZzlP0mpqeZbYd1IXdetEFW8+89DkZyS4kkpnWwh+Kzgc2rhi2bW20qpT6xEuz5O/1RaYNbM+lgjksd0D4+oOyzk5PuJSHSxpfL88a6JvDPzlZivaEvaQhBYNalARo+UpW8LgFT0qgvmjrkaGY02fVdulhBwjtj7SsYHWWPL8bUogL68TsMK4r8ckwcZl7n6JGuWCIA+tl/LxWQCOTf7Uimni2yARmLAW1aj/leXStj8c7PJqbWzAd5P26tF15su40JqYG4Stzu/YplLzGeLxOQwa3WtRZMiblmKnNB/lY2ZH908BDhmavHwBzGcWu/X4rj5H1Rt5mqXO7TCs5DL3jzUN87dfMnYPMwlBVK9iKDABg0LKo8pHfMMdSYhBtFGCMQdNAVs9vQ6j2nALphNKbp0pf2D8Nrg8Wsw72UsJM8KHiEIsqGq24Lgid2N7FA2NsuKdIXdjA8F5PktVxyFkhrj+aLqTcp58QDxPwSowB/F7sxRmrEFLKiIgQuoRV78VGUYQzQ+qJZeExb2MvTNqc0fgbzLbR2r3zJfQ4kZRaiI/iDpL1xmqdBfwY0NBaP4=
